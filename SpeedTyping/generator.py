@@ -3,7 +3,6 @@ import random
 
 class Generator:
     RandomWord = None
-    # Mode = 'Easy'
     txtFile = open("words.txt", "r")
     Word = txtFile.read().split()
 
