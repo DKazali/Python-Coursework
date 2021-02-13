@@ -13,17 +13,16 @@ class Engine:
     tFinish = None                  # tFinish = Timer Finish, тук запазваме времето на приключване на писането на думата
     fastestType = None              # Най-доброто постигнато време
     fastestWord = None              # Думата с която сме постигнали най-доброто време
-    Lose = None
     ET = None                       # Времето за което сме въвели последната показана дума
-    ET_formatted = None
+    ET_formatted = None             # ЕТ но форматирана до втория знак след запетаята
     total_time = 0                  # Общото ни време което сме прекарали в писане
     words_typed = 0                 # брой на написаните думи
-    x = 0
-    mode = None
-    avrg_time = 0                   
-    window = None
-    tt_f = None
-    at_f = None
+    x = 0                           # Променлива нужна за работата на Радио бутоните
+    mode = None                     # Служи за смяна на нивото на трудност
+    avrg_time = 0                   # Средно време на писане на дума
+    window = None                   # За създаването на прозореца
+    tt_f = None                     # TotalTime но форматирана
+    at_f = None                     # AverageTime форматирана
     rb_easy = None
     rb_normal = None
     rb_hard = None
@@ -41,12 +40,13 @@ class Engine:
     label9 = None
     label10 = None
     u_entry = None
-    ftf = None
-    got_word = False
-    Lost = False
-    Win_created = False
+    ftf = None                      # FastestType форматирана
+    Lost = False                    # Без нея излиза грешка за btn2 в main_frame
+    Win_created = False             # Служи за да не се създава нов прозорец многократно
 
     def to_mainframe(self, event):
+        if self.mode is None:
+            self.rb_n("<ButtonPress event num=1 x=52 y=12>")
         self.rb_easy.destroy()
         self.rb_normal.destroy()
         self.rb_hard.destroy()
@@ -144,7 +144,6 @@ class Engine:
         self.tFinish = None
         self.fastestType = None
         self.fastestWord = None
-        self.Lose = None
         self.ET = None
         self.ET_formatted = None
         self.total_time = 0
@@ -165,7 +164,6 @@ class Engine:
 
     def get_entry(self, event):
         self.uW = self.u_entry.get()
-        self.got_word = True
         self.u_entry.delete(0, 'end')
         self.main_frame()
 
@@ -200,6 +198,7 @@ class Engine:
 
         self.rb_normal = Radiobutton(self.window, text="Normal", variable=self.x, value=2)
         self.rb_normal.place(x=80, y=80)
+        self.rb_normal.select()
 
         self.rb_hard = Radiobutton(self.window, text="Hard", variable=self.x, value=3)
         self.rb_hard.place(x=80, y=100)
@@ -250,7 +249,6 @@ class Engine:
                 self.total_time += self.ET
                 self.words_typed += 1
                 self.avrg_time = self.total_time / self.words_typed
-                self.got_word = False
                 self.tStart = None
                 self.tFinish = None
                 if self.rW is not None and self.tStart is None:

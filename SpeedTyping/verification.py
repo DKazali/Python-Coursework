@@ -4,7 +4,10 @@ class Verification:
     win_lose = None
 
     def set_mode(self, m):
-        self.Mode = m
+        if m is None:
+            self.Mode = 'Normal'
+        else:
+            self.Mode = m
 
     def ver(self, random, user):
         if random == user:
